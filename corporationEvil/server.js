@@ -2,17 +2,21 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const security = require('./securityKey');
-
 const app = express();
+
+let allUsers = [];
+
 
 app.set('port', process.env.PORT || 8000);
 
 app.use(cookieParser(security.cookieSecret));
 
 app.use((req, res, next) => {
+    console.log(getUserIpAddress(req));
     setCookie(res);
     next();
 });
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -35,6 +39,29 @@ function setCookie(res) {
     console.log('setCookie');
 }
 
+function createUserId() {
+    crypto.randomBytes(15, (ex, buf) => {
+        if (ex) console.error(ex);
+        // 1.3076744e+12
+        return buf.toString('hex');
+    });
+}
+
+function getUserIpAddress(req) {
+    // let ip = req.headers['x-forwarded-for'] ||
+    //     req.connection.remoteAddress ||
+    //     req.socket.remoteAddress ||
+    //     (req.connection.socket ? req.connection.socket.remoteAddress : null);
+
+    let ip = req.ip;
+    let ips = req.ips;
+
+    return {
+        ip,
+        ips
+    };
+}
+
 // Обробник 404 помилки
 app.use((req, res, next) => {
     res.status(404);
@@ -53,4 +80,3 @@ app.listen(app.get('port'), () => {
     console.log( 'Express запущенний на http://localhost:' +
         app.get('port') + '; нажміть Ctrl+C для завершення.' );
 });
-

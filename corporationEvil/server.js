@@ -10,8 +10,8 @@ app.set('port', process.env.PORT || 8000);
 app.use(cookieParser(security.cookieSecret));
 
 app.use((req, res, next) => {
-    console.log(func.getUserIpAddress(req));
-    func.setCookie(res);
+    func.checkCookie(req, 'fdfdf');
+    func.setCookie(res, 'userId', func.createUserId());
     next();
 });
 

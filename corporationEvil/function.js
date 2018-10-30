@@ -28,8 +28,11 @@ module.exports.getUserIpAddress = (req) => {
     //     req.socket.remoteAddress ||
     //     (req.connection.socket ? req.connection.socket.remoteAddress : null);
 
-    let ip = req.ip;
+    let ipStr = req.ip;
     let ips = req.ips;
+
+    let arrStr = ipStr.split(':');
+    let ip = arrStr[arrStr.length - 1];
 
     return {
         ip,

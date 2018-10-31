@@ -2,22 +2,45 @@ const crypto = require('crypto');
 const security = require('./securityKey');
 let allUsers = [];
 
-module.exports.checkCookie = (req, ip) => {
+// module.exports.checkCookie = (req) => {
     // return req.signedCookies.user === security.myCookie;
-    if(req.signedCookies.userId === undefined) {
-        console.log('createUser');
-    } else {
-        console.log('write story');
-        console.log(req.headers);
-        allUsers.push({
-            userId: req.signedCookies.userId,
-            host: req.hostname,
-            refererHost: req.headers.referer,
-            // url: req.baseUrl,
-            ip: ip
-        })
+
+    // if(req.signedCookies.userId === undefined) {
+    //     console.log('createUser');
+    // } else {
+    //     console.log('write story');
+    //     console.log(req.headers);
+    //     allUsers.push({
+    //         userId: req.signedCookies.userId,
+    //         host: req.hostname,
+    //         refererHost: req.headers.referer,
+    //         // url: req.baseUrl,
+    //         ip: ip
+    //     })
+    // }
+
+//     return req.signedCookies.userId !== undefined;
+//
+// };
+
+module.exports.addUserToDb = (req, id, ip) => {
+    allUsers.push({
+        userId: id,
+        host: req.hostname,
+        refererHost: req.headers.referer,
+        // url: req.baseUrl,
+        ip: ip
+    })
+};
+
+module.exports.searchUserInDb = (id) => {
+    for(let i = 0; i < allUsers.length; i++) {
+        if(allUsers[i].userId === id) {
+            return true;
+        }
     }
 
+    return false;
 };
 
 module.exports.setCookie = (res, cookieName, cookieValue) => {

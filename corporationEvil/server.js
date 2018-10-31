@@ -10,8 +10,22 @@ app.set('port', process.env.PORT || 8000);
 app.use(cookieParser(security.cookieSecret));
 
 app.use((req, res, next) => {
-    func.checkCookie(req, 'fdfdf');
-    func.setCookie(res, 'userId', func.createUserId());
+    let id;
+
+    if(req.signedCookies.userId === undefined) {
+        id =  func.createUserId();
+        func.setCookie(res, 'userId', id);
+    }
+
+    let userId = id || req.signedCookies.userId;
+    if(func.searchUserInDb(userId)) {
+        console.log('user in db');
+    } else {
+        func.addUserToDb(req, userId, func.getUserIpAddress(req));
+    }
+
+    
+
     next();
 });
 

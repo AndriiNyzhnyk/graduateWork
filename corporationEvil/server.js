@@ -18,10 +18,14 @@ app.use((req, res, next) => {
     }
 
     let userId = id || req.signedCookies.userId;
-    if(func.searchUserInDb(userId)) {
+    let {value, index} = func.searchUserInDb(userId);
+    let ip = func.getUserIpAddress(req);
+
+    if(value) {
         console.log('user in db');
+        func.addHistoryUserInDb(req, index, ip)
     } else {
-        func.addUserToDb(req, userId, func.getUserIpAddress(req));
+        func.addUserToDb(req, userId, ip);
     }
 
     

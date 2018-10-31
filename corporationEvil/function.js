@@ -24,25 +24,41 @@ let allUsers = [];
 // };
 
 module.exports.addUserToDb = (req, id, ip) => {
-    console.log(req.headers);
     allUsers.push({
         userId: id,
         host: req.hostname,
         refererHost: req.headers.referer,
         userAgent: req.headers['user-agent'],
         // url: req.baseUrl,
-        ip: ip
+        ip: ip,
+        history: []
     })
+};
+
+module.exports.addHistoryUserInDb = (req, indexInArr, ip) => {
+    allUsers[indexInArr].history.push({
+        host: req.hostname,
+        refererHost: req.headers.referer,
+        userAgent: req.headers['user-agent'],
+        ip: ip,
+    });
+
 };
 
 module.exports.searchUserInDb = (id) => {
     for(let i = 0; i < allUsers.length; i++) {
         if(allUsers[i].userId === id) {
-            return true;
+            return {
+                value: true,
+                index: i
+            };
         }
     }
 
-    return false;
+    return {
+        value: false,
+        index: -1
+    };
 };
 
 module.exports.setCookie = (res, cookieName, cookieValue) => {

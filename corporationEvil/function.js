@@ -66,7 +66,8 @@ module.exports.setCookie = (res, cookieName, cookieValue) => {
     res.cookie(cookieName, cookieValue,
         {
             signed: true,
-            path: '/'
+            path: '/',
+            maxAge: 900000
             // httpOnly: true
         });
     console.log('setCookie');

@@ -5,6 +5,8 @@ const security = require('./securityKey');
 const func = require('./function');
 const app = express();
 
+let allUsers = [];
+
 app.set('port', process.env.PORT || 8000);
 
 app.use(cookieParser(security.cookieSecret));
@@ -25,17 +27,11 @@ app.use((req, res, next) => {
     }
 
     let userId = id || req.signedCookies.userId;
-    let {value, index} = func.searchUserInDb(userId);
-    let ip = func.getUserIpAddress(req);
 
-    if(value) {
-        console.log('user in db');
-        func.addHistoryUserInDb(req, index, ip)
-    } else {
-        func.addUserToDb(req, userId, ip);
-    }
-
-    
+    func.startFollow(req, allUsers, userId)
+        .then( () => {
+            console.log('Done');
+        });
 
     next();
 });
@@ -58,3 +54,7 @@ app.listen(app.get('port'), () => {
     console.log( 'Express запущенний на http://localhost:' +
         app.get('port') + '; нажміть Ctrl+C для завершення.' );
 });
+
+setInterval(() => {
+    console.log(allUsers);
+}, 5000);

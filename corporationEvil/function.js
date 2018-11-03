@@ -1,6 +1,4 @@
 const crypto = require('crypto');
-const security = require('./securityKey');
-let allUsers = [];
 
 // module.exports.checkCookie = (req) => {
     // return req.signedCookies.user === security.myCookie;
@@ -23,43 +21,6 @@ let allUsers = [];
 //
 // };
 
-module.exports.addUserToDb = (req, id, ip) => {
-    allUsers.push({
-        userId: id,
-        host: req.hostname,
-        refererHost: req.headers.referer,
-        userAgent: req.headers['user-agent'],
-        // url: req.baseUrl,
-        ip: ip,
-        history: []
-    })
-};
-
-module.exports.addHistoryUserInDb = (req, indexInArr, ip) => {
-    allUsers[indexInArr].history.push({
-        host: req.hostname,
-        refererHost: req.headers.referer,
-        userAgent: req.headers['user-agent'],
-        ip: ip,
-    });
-
-};
-
-module.exports.searchUserInDb = (id) => {
-    for(let i = 0; i < allUsers.length; i++) {
-        if(allUsers[i].userId === id) {
-            return {
-                value: true,
-                index: i
-            };
-        }
-    }
-
-    return {
-        value: false,
-        index: -1
-    };
-};
 
 module.exports.setCookie = (res, cookieName, cookieValue) => {
     console.log(cookieName, cookieValue);
@@ -67,16 +28,11 @@ module.exports.setCookie = (res, cookieName, cookieValue) => {
         {
             signed: true,
             path: '/',
-            maxAge: 900000
+            // maxAge: 900000
             // httpOnly: true
         });
     console.log('setCookie');
 };
-
-module.exports.createUser = () => {
-
-};
-
 
 module.exports.createUserId = () => {
     // crypto.randomBytes(15, (ex, buf) => {
@@ -90,24 +46,88 @@ module.exports.createUserId = () => {
 
 };
 
-module.exports.getUserIpAddress = (req) => {
-    // let ip = req.headers['x-forwarded-for'] ||
-    //     req.connection.remoteAddress ||
-    //     req.socket.remoteAddress ||
-    //     (req.connection.socket ? req.connection.socket.remoteAddress : null);
+module.exports.startFollow = async (req, users, userId) => {
+    try {
+        let {value, index} = await searchUserInDb(users, userId);
+        let ip = await getUserIpAddress(req);
 
-    let ipStr = req.ip;
-    let ips = req.ips;
+        if(value) {
+            console.log('user in db');
+            await addHistoryUserToDb(req, users, index, ip)
+        } else {
+            await addUserToDb(req, users, userId, ip);
+        }
+    } catch (e) {
+        console.error(e);
+    }
 
-    let arrStr = ipStr.split(':');
-    let ip = arrStr[arrStr.length - 1];
-
-    return {
-        ip,
-        ips
-    };
 };
 
-setInterval(() => {
-    console.log(allUsers);
-}, 5000);
+function searchUserInDb(users, id) {
+    return new Promise( (resolve, reject) => {
+        for(let i = 0; i < users.length; i++) {
+            if(users[i].userId === id) {
+                resolve({
+                    value: true,
+                    index: i
+                });
+
+                break;
+            }
+        }
+
+        resolve({
+            value: false,
+            index: -1
+        });
+    });
+}
+
+function getUserIpAddress(req) {
+    return new Promise( (resolve, reject) => {
+        // let ip = req.headers['x-forwarded-for'] ||
+        //     req.connection.remoteAddress ||
+        //     req.socket.remoteAddress ||
+        //     (req.connection.socket ? req.connection.socket.remoteAddress : null);
+
+        let ipStr = req.ip;
+        let ips = req.ips;
+
+        let arrStr = ipStr.split(':');
+        let ip = arrStr[arrStr.length - 1];
+
+        resolve({
+            ip,
+            ips
+        });
+    });
+}
+
+function addHistoryUserToDb (req, users, i, ip) {
+    return new Promise( (resolve, reject) => {
+        users[i].history.push({
+            host: req.hostname,
+            refererHost: req.headers.referer,
+            userAgent: req.headers['user-agent'],
+            ip: ip,
+        });
+
+        resolve('addHistoryUserToDb');
+    });
+}
+
+function addUserToDb(req, users, id, ip) {
+    return new Promise( (resolve, reject) => {
+        users.push({
+            userId: id,
+            host: req.hostname,
+            refererHost: req.headers.referer,
+            userAgent: req.headers['user-agent'],
+            // url: req.baseUrl,
+            ip: ip,
+            history: []
+        });
+
+        resolve('addUserToDb')
+    });
+}

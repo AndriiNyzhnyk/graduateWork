@@ -110,6 +110,7 @@ function addHistoryUserToDb (req, users, i, ip) {
             refererHost: req.headers.referer,
             userAgent: req.headers['user-agent'],
             ip: ip,
+            date: new Date(),
         });
 
         resolve('addHistoryUserToDb');
@@ -125,6 +126,7 @@ function addUserToDb(req, users, id, ip) {
             userAgent: req.headers['user-agent'],
             // url: req.baseUrl,
             ip: ip,
+            date: new Date(),
             history: []
         });
 

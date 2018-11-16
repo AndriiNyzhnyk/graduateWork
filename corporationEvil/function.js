@@ -109,6 +109,10 @@ function addHistoryUserToDb (req, users, i, ip) {
             host: req.hostname,
             refererHost: req.headers.referer,
             userAgent: req.headers['user-agent'],
+            otherCookie: {
+                cookies: req.cookies,
+                signedCookies: req.signedCookies
+            },
             ip: ip,
             date: new Date(),
         });
@@ -124,12 +128,17 @@ function addUserToDb(req, users, id, ip) {
             host: req.hostname,
             refererHost: req.headers.referer,
             userAgent: req.headers['user-agent'],
+            otherCookie: {
+                cookies: req.cookies,
+                signedCookies: req.signedCookies
+            },
             // url: req.baseUrl,
             ip: ip,
             date: new Date(),
             history: []
         });
 
+        console.log(req.cookies);
         resolve('addUserToDb')
     });
 }

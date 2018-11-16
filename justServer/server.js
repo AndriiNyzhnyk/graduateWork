@@ -11,13 +11,36 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html')
+    res.cookie('someCookieGoodServer1', 'hello my friends', {
+        path: '/',
+        secure: false
+    });
+
+    console.log('setCookie');
+
+    res.sendFile(__dirname + '/public/mainPage.html');
 });
 
 app.get('/somePage1', (req, res) => {
-    res.sendFile(__dirname + '/public/somePage1.html')
+    res.cookie('someCookieGoodServer2', 'hello my bos', {
+        path: '/',
+        secure: false
+    });
+
+    console.log('setCookie');
+
+    res.sendFile(__dirname + '/public/somePage1.html');
 });
 
+process.on('unhandledRejection', (reason, p) => {
+    console.error('Unhandled Rejection at:', p, 'reason:', reason);
+    // application specific logging, throwing an error, or other logic here
+});
+
+process.on('uncaughtException', (err) => {
+    console.error(err, 'Uncaught Exception thrown');
+    process.exit(1);
+});
 
 app.listen(app.get('port'), () => {
     console.log( 'Express запущенний на http://localhost:' +

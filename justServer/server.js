@@ -32,6 +32,11 @@ app.get('/somePage1', (req, res) => {
     res.sendFile(__dirname + '/public/somePage1.html');
 });
 
+app.get('/admin', (req, res) => {
+    res.sendFile(__dirname + '/adminPanel/index.html');
+});
+
+
 process.on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at:', p, 'reason:', reason);
     // application specific logging, throwing an error, or other logic here

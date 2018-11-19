@@ -32,6 +32,16 @@ app.get('/somePage1', (req, res) => {
     res.sendFile(__dirname + '/public/somePage1.html');
 });
 
+app.get("/pageIframe", (req, res) => {
+    res.cookie('someCookieGoodServer3', 'hello my iFrame', {
+        path: '/',
+        secure: false
+    });
+
+    console.log('setCookie');
+    res.sendFile(__dirname + '/public/webPage1/mainPage.html');
+});
+
 app.get('/admin', (req, res) => {
     res.sendFile(__dirname + '/adminPanel/index.html');
 });

@@ -5,7 +5,7 @@ const security = require('./securityKey');
 const func = require('./function');
 const app = express();
 
-let allUsers = [];
+// let allUsers = [];
 
 app.set('port', process.env.PORT || 8000);
 
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 
     let userId = id || req.signedCookies.userId;
 
-    func.startFollow(req, allUsers, userId)
+    func.startFollow(req, userId)
         .then( () => {
             console.log('Done');
         });
@@ -54,7 +54,3 @@ app.listen(app.get('port'), () => {
     console.log( 'Express запущенний на http://localhost:' +
         app.get('port') + '; нажміть Ctrl+C для завершення.' );
 });
-
-setInterval(() => {
-    console.log(allUsers);
-}, 5000);

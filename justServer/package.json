@@ -12,6 +12,8 @@
   "author": "Andrii Nyzhnyk",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",

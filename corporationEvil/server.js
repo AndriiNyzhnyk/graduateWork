@@ -5,7 +5,6 @@ const security = require('./securityKey');
 const func = require('./function');
 const app = express();
 
-// let allUsers = [];
 
 app.set('port', process.env.PORT || 8000);
 
@@ -25,6 +24,8 @@ app.use((req, res, next) => {
         id =  func.createUserId();
         func.setCookie(res, 'userId', id);
     }
+    
+    console.log(req.signedCookies);
 
     let userId = id || req.signedCookies.userId;
 

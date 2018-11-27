@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign In</title>
+    <meta charset="utf-8" />
+    <link href="/style/signIn.css" rel="stylesheet">
+</head>
+<body>
+<form action="" class="login" name="signIn">
+    <p>
+        <label for="login">Логін:</label>
+        <input type="text" name="login" id="login" value="" autocomplete="off" required>
+    </p>
+
+    <p>
+        <label for="password">Пароль:</label>
+        <input type="password" name="password" id="password" value="" autocomplete="off" required>
+    </p>
+
+    <p class="login-submit">
+        <button type="submit" class="login-button">Ввійти</button>
+    </p>
+
+    <p class="forgot-password"><a href="">Забули пароль ?</a></p>
+</form>
+
+<script>
+    let form = document.forms.signIn;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const body = "login=" + form.login.value + "&password=" + form.password.value;
+
+        form.login.value = "";
+        form.password.value = "";
+
+        let XHR = new XMLHttpRequest();
+        XHR.open('POST', '/signInAdmin');
+        XHR.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        XHR.onreadystatechange = reqReadyStateChange;
+        XHR.send(body);
+
+        function reqReadyStateChange() {
+            if (XHR.readyState === 4 && XHR.status === 200) {
+                console.log(XHR.responseText);
+
+                if(XHR.responseText === 'badLoginOrPassword') {
+                    alert("Пароль або Логін некоректні !");
+                } else {
+                    window.location.href = XHR.responseText;
+                }
+            }
+        }
+
+    });
+</script>
+</body>
+</html>

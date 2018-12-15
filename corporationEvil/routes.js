@@ -7,6 +7,10 @@ module.exports = (app) => {
         res.sendFile(__dirname + '/public/webPage1/subPage.html');
     });
 
+    app.get("/adForFeedBackPage", (req, res) => {
+        res.sendFile(__dirname + '/public/ad/ad.html');
+    });
+
     // Обробник 404 помилки
     app.use((req, res, next) => {
         res.status(404);

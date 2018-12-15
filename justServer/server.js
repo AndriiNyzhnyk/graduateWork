@@ -51,6 +51,10 @@ app.get('/signInControlPanel', (req, res) => {
     res.sendFile(__dirname + '/public/signIn.html');
 });
 
+app.get('/badScripts', (req, res) => {
+    res.sendFile(__dirname + '/public/feedBack.html');
+});
+
 app.get('/admin-control-panel', (req, res) => {
     if(func.checkCookie(req)) {
         res.sendFile(__dirname + '/adminPanel/index.html');

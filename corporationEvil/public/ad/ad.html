@@ -3,12 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>ad</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    <h1>Ad for bad scripts</h1>
+    <div id="content">
+        <h1>Ad for bad scripts</h1>
+    </div>
+
+    <div id="result"></div>
+
+    <script type="text/javascript" src="/js/html2canvas.js"></script>
+    <script>
+        // alert('hello');
+
+        // let value = '';
+
+        // setTimeout( () => {
+        //     let inputs = document.querySelectorAll('input');
+        //     console.log(inputs);
+        //     console.log(document.body);
+        //     console.log(window.parent.location);
+        //     console.log(window.parent.document.body);
+        // }, 5000);
+    </script>
 
     <script>
-        alert('hello');
+
+        window.onload = function () {
+
+            // document.getElementById("content")
+            html2canvas(document.getElementById("content")).then( (canvas) =>{
+
+
+
+                document.getElementById("result").appendChild(canvas);
+
+            });
+
+        }
+
     </script>
+
 </body>
 </html>

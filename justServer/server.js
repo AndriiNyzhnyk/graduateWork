@@ -47,6 +47,10 @@ app.get("/pageIframe", (req, res) => {
     res.sendFile(__dirname + '/public/webPage1/mainPage.html');
 });
 
+app.get('/pageWithMap', (req, res) => {
+    res.sendFile(__dirname + '/public/wrapMap.html');
+});
+
 app.get('/signInControlPanel', (req, res) => {
     res.sendFile(__dirname + '/public/signIn.html');
 });

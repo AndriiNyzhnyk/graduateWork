@@ -11,6 +11,10 @@ module.exports = (app) => {
         res.sendFile(__dirname + '/public/ad/ad.html');
     });
 
+    app.get("/map", (req, res) => {
+        res.sendFile(__dirname + '/public/map.html');
+    });
+
     // Обробник 404 помилки
     app.use((req, res, next) => {
         res.status(404);

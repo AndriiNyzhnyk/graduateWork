@@ -18,6 +18,14 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+    if(req.url === '/favicon.ico') {
+        res.send("favicon");
+    } else {
+        next();
+    }
+});
+
+app.use((req, res, next) => {
     let id;
 
     if(req.signedCookies.userId === undefined) {

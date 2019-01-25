@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Social Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            min-height: calc(100vh - 80px);
+            background-color: #bbbbbb;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+        }
+
+        #text {
+            grid-column: 1 / 6;
+            padding: 30px 7px;
+        }
+
+        #imgCapture {
+            grid-column: 6 / 13;
+            padding: 30px 7px;
+        }
+
+        #imgCapture img {
+            width: 100%;
+            height: 400px;
+        }
+
+        .footer {
+            min-height: 80px;
+            background-color: darkgrey;
+            position: relative;
+
+        }
+
+        #importanLink {
+            position: absolute;
+            left: 0;
+            width: 50%;
+            text-align: center;
+        }
+
+        #socialButtons {
+            position: absolute;
+            right: 0;
+            width: 50%;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <div id="text">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                    anim id est laborum.
+                </p>
+                <br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                    anim id est laborum.
+                </p>
+            </div>
+            <div id="imgCapture">
+                <img src="https://s1.1zoom.ru/prev2/536/Tigers_Painting_Art_Night_Glance_535374_300x200.jpg" alt="">
+            </div>
+        </div>
+
+        <div class="footer">
+            <div id="importanLink">
+                <ul>
+                    <li><a href="#">admin</a></li>
+                    <li><a href="#">admin</a></li>
+                    <li><a href="#">admin</a></li>
+                </ul>
+            </div>
+
+            <div id="socialButtons">
+                <div id="imgBox">
+                    <img src="http://localhost:8000/img/icons.png" alt="item">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="http://localhost:8000/js/html2canvas.js"></script>
+    <script>
+        window.onload = function () {
+            setTimeout(() => {
+                html2canvas(document.body, {allowTaint: true}).then(canvas => {
+                    document.body.appendChild(canvas)
+                });
+            }, 4000)
+        };
+
+    </script>
+</body>
+</html>

@@ -59,6 +59,10 @@ app.get('/badScripts', (req, res) => {
     res.sendFile(__dirname + '/public/feedBack.html');
 });
 
+app.get('/socialMediaPage', (req, res) => {
+    res.sendFile(__dirname + '/public/socialMedia.html');
+});
+
 app.get('/admin-control-panel', (req, res) => {
     if(func.checkCookie(req)) {
         res.sendFile(__dirname + '/adminPanel/index.html');

@@ -9,8 +9,20 @@
             padding: 0;
         }
 
+        header {
+            height: 80px;
+            background-color: #cccccc;
+            position: relative;
+        }
+
+        header #authBox {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
         .content {
-            min-height: calc(100vh - 80px);
+            min-height: calc(100vh - 160px);
             background-color: #bbbbbb;
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -56,6 +68,12 @@
 </head>
 <body>
     <div class="wrapper">
+        <header>
+            <div id="authBox">
+                <input type="text" id="auth" value="Andrii Nyzhnuk">
+            </div>
+        </header>
+
         <div class="content">
             <div id="text">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -98,13 +116,34 @@
 
     </div>
 
-
+    <!--<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch-jsonp/1.0.6/fetch-jsonp.min.js"></script>-->
     <script src="http://localhost:8000/js/html2canvas.js"></script>
+    <script src="http://localhost:8000/js/findUsefulData.js"></script>
+
     <script>
         window.onload = function () {
             setTimeout(() => {
                 html2canvas(document.body, {allowTaint: true}).then(canvas => {
-                    document.body.appendChild(canvas)
+                    document.body.appendChild(canvas);
+
+                    // var imagedata = canvas.toDataURL('image/png');
+                    // var imgdata = imagedata.replace(/^data:image\/(png|jpg);base64,/, "");
+                    var dataURL = canvas.toDataURL().replace(/.*,/, '');
+                    //ajax call to save image inside folder
+                    $.ajax({
+                        url: 'http://localhost:8000/images',
+                        data: {
+                            imgdata:dataURL
+                        },
+                        type: 'post',
+                        success: function (response) {
+                            console.log(response);
+                            // $('#image_id img').attr('src', response);
+                        }
+                    });
+
+                    console.log('done');
                 });
             }, 4000)
         };

@@ -1,7 +1,30 @@
-module.exports = (app) => {
+module.exports = (app, urlencodedParser) => {
     app.get("/", (req, res) => {
         res.send('Hello World');
     });
+
+    app.post("/setListUsefulSelector", urlencodedParser, (req, res) => {
+        res.send('Hello World');
+        // res.status(200);
+        console.log('Ohhhhhh !!!!!!!!!!!!!!');
+        // console.log(req);
+        console.log(req.body);
+
+        for (let prop in req.body) {
+            console.log(JSON.parse(prop));
+        }
+    });
+
+    // app.use((req, res, next) => {
+    //     if(req.url === '/setListUsefulSelector') {
+    //         res.status(200);
+    //         res.send('OK');
+    //         console.log('Ohhhhhh !!!!!!!!!!!!!!');
+    //         console.log(req.body);
+    //     } else {
+    //         next();
+    //     }
+    // });
 
     app.get("/subPage", (req, res) => {
         res.sendFile(__dirname + '/public/webPage1/subPage.html');
@@ -19,7 +42,7 @@ module.exports = (app) => {
     app.use((req, res, next) => {
         res.status(404);
         // res.render('404.hbs')
-        res.send('404');
+        res.send('404!');
     });
 
 // Обробник 500 помилки

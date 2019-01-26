@@ -11,9 +11,16 @@ const urlencodedParser = bodyParser.urlencoded({extended: true});
 
 app.set('port', process.env.PORT || 3000);
 
+app.use((req, res, next) => {
+    res.set({
+       'Access-Control-Allow-Origin': '*'
+    });
+    next();
+});
 app.use(cookieParser(security.securityCookie));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(__dirname + '/public'));
+
 
 app.get('/', (req, res) => {
     res.cookie('someCookieGoodServer1', 'hello my friends', {

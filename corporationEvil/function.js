@@ -23,12 +23,13 @@ module.exports.createUserId = () => {
     return crypto.randomBytes(15).toString('hex');
 };
 
-module.exports.startFollow = async (req, userId) => {
-    try {
+module.exports.startFollow = (req, userId) => {
 
-        let value = await db.findUserInDb(userId);
-
-        let ip = await getUserIpAddress(req);
+    Promise.all([
+        db.findUserInDb(userId),
+        getUserIpAddress(req)
+    ]).then( (result) => {
+        let [value, ip] = result;
 
         if(value) {
             console.log('user in db');
@@ -37,9 +38,10 @@ module.exports.startFollow = async (req, userId) => {
             console.log('create new user');
             db.addUserToDb(req, userId, ip)
         }
-    } catch (e) {
-        console.error(e);
-    }
+
+    }).catch( (err) => {
+        console.error(err);
+    });
 
 };
 

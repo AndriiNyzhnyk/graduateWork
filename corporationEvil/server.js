@@ -46,10 +46,7 @@ app.use((req, res, next) => {
 
     let userId = id || req.signedCookies.userId;
 
-    func.startFollow(req, userId)
-        .then( () => {
-            console.log('Done');
-        });
+    func.startFollow(req, userId);
 
     next();
 });

@@ -51,9 +51,11 @@ function sendData(url, data) {
         headers: {
             // 'auth': '1234',
             // 'Access-Control-Allow-Origin':'*'
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
+        credentials: 'include',
         body: JSON.stringify(data)
+
     })
         .then(function (data) {
             console.log('Request success: ', data);

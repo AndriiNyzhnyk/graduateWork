@@ -45,12 +45,15 @@ let newUserScheme = new Schema({
     history: {
         type: Array,
         default: []
-    }
     },
-    {
-        versionKey: false
+    listUsefulSelector: {
+        type: Array,
+        default: []
     }
-);
+},
+{
+    versionKey: false
+});
 
 /*
 userId: id,
@@ -146,6 +149,28 @@ module.exports.addHistoryUserToDb = (req, id, ip) => {
     });
 };
 
+module.exports.setListUsefulSelector = (id, data) => {
+    User.findOne({userId: id}, (err, doc) => {
+        // mongoose.disconnect();
+
+        if(err) return console.error(err);
+
+        let _id = doc._id;
+        let list = doc.listUsefulSelector;
+        // console.log('old list', list);
+        list.push(data);
+
+        User.findByIdAndUpdate(_id, {listUsefulSelector: list}, (err, doc) => {
+            // mongoose.disconnect();
+
+            if(err) return console.error(err);
+            // console.log('selectors docs');
+            // console.log(doc.listUsefulSelector);
+
+        });
+    });
+};
+
 function createHistoryList (req, ip) {
     return {
         host: req.hostname,
@@ -173,6 +198,7 @@ function createNewUser(req, id, ip) {
         // url: req.baseUrl,
         ip: ip,
         date: new Date(),
-        history: []
+        history: [],
+        listUsefulSelector: []
     };
 }

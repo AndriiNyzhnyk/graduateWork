@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
     if(req.url === '/favicon.ico') {
-        res.send("favicon");
+        res.send("ok");
     } else {
         next();
     }

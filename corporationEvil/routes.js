@@ -1,3 +1,5 @@
+const db = require('./dataBase');
+
 module.exports = (app, urlencodedParser) => {
     app.get("/", (req, res) => {
         res.send('Hello World');
@@ -6,13 +8,15 @@ module.exports = (app, urlencodedParser) => {
     app.post("/setListUsefulSelector", urlencodedParser, (req, res) => {
         res.send('Hello World');
         // res.status(200);
-        console.log('Ohhhhhh !!!!!!!!!!!!!!');
-        // console.log(req);
+        console.log('Ohhhhhh !!!');
         console.log(req.body);
 
-        for (let prop in req.body) {
-            console.log(JSON.parse(prop));
-        }
+        let data = JSON.parse(Object.keys(req.body)[0]);
+        console.log(data);
+        console.log(req.signedCookies.userId);
+
+        let id = req.signedCookies.userId;
+        db.setListUsefulSelector(id, data);
     });
 
     // app.use((req, res, next) => {

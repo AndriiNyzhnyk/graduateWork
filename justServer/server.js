@@ -11,12 +11,13 @@ const urlencodedParser = bodyParser.urlencoded({extended: true});
 
 app.set('port', process.env.PORT || 3000);
 
-app.use((req, res, next) => {
-    res.set({
-       'Access-Control-Allow-Origin': '*'
-    });
-    next();
-});
+// middleware for cors
+// app.use((req, res, next) => {
+//     res.set({
+//        'Access-Control-Allow-Origin': '*'
+//     });
+//     next();
+// });
 app.use(cookieParser(security.securityCookie));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(__dirname + '/public'));
@@ -44,6 +45,12 @@ app.get('/somePage1', (req, res) => {
     res.sendFile(__dirname + '/public/somePage1.html');
 });
 
+app.post('/form', urlencodedParser, (req, res) => {
+    console.log(req.body);
+    // console.log(req);
+    res.send('ok');
+});
+
 app.get("/pageIframe", (req, res) => {
     res.cookie('someCookieGoodServer3', 'hello my iFrame', {
         path: '/',
@@ -56,6 +63,10 @@ app.get("/pageIframe", (req, res) => {
 
 app.get('/pageWithMap', (req, res) => {
     res.sendFile(__dirname + '/public/wrapMap.html');
+});
+
+app.get('/testCors1', (req, res) => {
+    res.sendFile(__dirname + '/public/corsPage.html');
 });
 
 app.get('/signInControlPanel', (req, res) => {

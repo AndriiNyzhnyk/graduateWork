@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+const { parse } = require('querystring');
+const formidable = require('formidable');
 const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const urlencodedParser = bodyParser.urlencoded({extended: false});
@@ -12,12 +14,13 @@ app.set('port', process.env.PORT || 8000);
 
 app.use(cookieParser(security.cookieSecret));
 
-app.use((req, res, next) => {
-    res.set({
-        'Access-Control-Allow-Origin': '*'
-    });
-    next();
-});
+// middleware for cors
+// app.use((req, res, next) => {
+//     res.set({
+//         'Access-Control-Allow-Origin': '*'
+//     });
+//     next();
+// });
 
 app.use((req, res, next) => {
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');

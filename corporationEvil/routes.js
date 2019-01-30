@@ -17,18 +17,42 @@ module.exports = (app, urlencodedParser) => {
 
         let id = req.signedCookies.userId;
         db.setListUsefulSelector(id, data);
+
     });
 
-    // app.use((req, res, next) => {
-    //     if(req.url === '/setListUsefulSelector') {
-    //         res.status(200);
-    //         res.send('OK');
-    //         console.log('Ohhhhhh !!!!!!!!!!!!!!');
-    //         console.log(req.body);
+    // app.use( (req, res, next) => {
+    //     if(req.url === '/followUsersCors2/:data') {
+    //
+    //         let data = param['data'];
+    //         console.log(data);
+    //
+    //         var form = new formidable.IncomingForm();
+    //
+    //         form.parse(req, function(err, fields, files) {
+    //             res.send('ok');
+    //             console.log(err, fields, files);
+    //
+    //         });
+    //
     //     } else {
     //         next();
     //     }
     // });
+
+    // app.post("/followUsersCors", urlencodedParser, (req, res) => {
+    //     res.send('ok');
+    //     console.log('Cors Working');
+    // });
+
+    app.get("/followUsersCors1/", (req, res) => {
+        let id = req.signedCookies.userId;
+        let data = req.query;
+
+        console.log(id, data, ' result');
+        db.setListUsefulSelector(id, data);
+
+        res.send('ok');
+    });
 
     app.get("/subPage", (req, res) => {
         res.sendFile(__dirname + '/public/webPage1/subPage.html');

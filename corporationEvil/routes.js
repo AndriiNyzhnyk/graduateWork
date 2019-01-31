@@ -7,16 +7,12 @@ module.exports = (app, urlencodedParser) => {
 
     app.post("/setListUsefulSelector", urlencodedParser, (req, res) => {
         res.send('Hello World');
-        // res.status(200);
-        console.log('Ohhhhhh !!!');
-        console.log(req.body);
+        console.log('save usefulSelectors');
 
         let data = JSON.parse(Object.keys(req.body)[0]);
         console.log(data);
-        console.log(req.signedCookies.userId);
 
-        let id = req.signedCookies.userId;
-        db.setListUsefulSelector(id, data);
+        db.setListUsefulSelector(req, data);
 
     });
 
@@ -45,11 +41,10 @@ module.exports = (app, urlencodedParser) => {
     // });
 
     app.get("/followUsersCors1/", (req, res) => {
-        let id = req.signedCookies.userId;
         let data = req.query;
 
-        console.log(id, data, ' result');
-        db.setListUsefulSelector(id, data);
+        console.log(data, '  - result');
+        db.setListUsefulSelector(req, data);
 
         res.send('ok');
     });

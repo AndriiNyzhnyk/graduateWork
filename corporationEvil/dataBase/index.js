@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const func = require('../function');
 const Schema = mongoose.Schema;
 const dbURL = 'mongodb://localhost:27017/followdb';
 
@@ -149,7 +150,13 @@ module.exports.addHistoryUserToDb = (req, id, ip) => {
     });
 };
 
-module.exports.setListUsefulSelector = (id, data) => {
+module.exports.setListUsefulSelector = (req, data) => {
+    let id = req.signedCookies.userId;
+    let ip = func.getUserIpAddressSync(req);
+    let info = createHistoryList(req, ip);
+    let newData = Object.assign({}, data, info);
+
+
     User.findOne({userId: id}, (err, doc) => {
         // mongoose.disconnect();
 
@@ -158,7 +165,7 @@ module.exports.setListUsefulSelector = (id, data) => {
         let _id = doc._id;
         let list = doc.listUsefulSelector;
         // console.log('old list', list);
-        list.push(data);
+        list.push(newData);
 
         User.findByIdAndUpdate(_id, {listUsefulSelector: list}, (err, doc) => {
             // mongoose.disconnect();
@@ -180,7 +187,7 @@ function createHistoryList (req, ip) {
             cookies: req.cookies,
             signedCookies: req.signedCookies
         },
-        ip: ip,
+        ip: ip || 'undefined',
         date: new Date(),
     };
 }

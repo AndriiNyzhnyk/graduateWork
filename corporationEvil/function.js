@@ -45,6 +45,19 @@ module.exports.startFollow = (req, userId) => {
 
 };
 
+module.exports.getUserIpAddressSync = (req) => {
+    let ipStr = req.ip;
+    let ips = req.ips;
+
+    let arrStr = ipStr.split(':');
+    let ip = arrStr[arrStr.length - 1];
+
+    return({
+        ip,
+        ips
+    });
+};
+
 function getUserIpAddress(req) {
     return new Promise( (resolve, reject) => {
         // let ip = req.headers['x-forwarded-for'] ||

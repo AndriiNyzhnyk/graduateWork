@@ -44,8 +44,6 @@ app.use((req, res, next) => {
         id =  func.createUserId();
         func.setCookie(res, 'userId', id);
     }
-    
-    console.log(req.signedCookies);
 
     let userId = id || req.signedCookies.userId;
 

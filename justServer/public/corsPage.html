@@ -133,8 +133,11 @@
             let values = getAllValuesFromForm(form.elements);
             let result = filterValues(values);
 
-            sendDataToServer(url, result)
-                .then( () => {
+            let promises = result.map( (item) => {
+                return sendDataToServer(url, item);
+            });
+
+            Promise.all(promises).then( () => {
                     self.submit();
                     console.log('try send');
                 })
@@ -142,6 +145,7 @@
                     console.error(err);
                     self.submit();
                 });
+
         }
         
 
@@ -154,14 +158,63 @@
 
         function filterValues(obj) {
             let oldObj = {...obj};
+            let totalLength = 0;
             
             for( let key in oldObj) {
                 if(key === '') {
                     delete oldObj[key];
+                } else {
+                    let arr = oldObj[key].split('');
+                    totalLength += arr.length;
+                    totalLength += key.toString().length;
+                    console.log(key, key.toString().length);
+                    
+                    arr.forEach( (item, i, arr) => {
+                        if(item === ' ') arr[i] = '-';
+                    });
+
+                    oldObj[key] = arr.join('');
                 }
             }
             
-            return oldObj;
+            if(totalLength > 2000) {
+              return  splitObj(2000, oldObj);
+            }
+
+            return [oldObj];
+        }
+        
+        function splitObj(maxLength, obj) {
+            let size = maxLength;
+            let arrForPartObj = [];
+            let tempObj = {};
+            let countKeysInObj = Object.keys(obj).length;
+            let counter = 0;
+
+            for(let key in obj) {
+                let length = 0;
+                length += key.toString().length;
+                length += obj[key].toString().length;
+                counter++;
+
+                if(length < size) {
+                    tempObj[key] = obj[key];
+                    size = size - length;
+                } else {
+                    arrForPartObj.push(tempObj);
+                    tempObj = {};
+                    size = maxLength;
+
+                    tempObj[key] = obj[key];
+                    size = size - length;
+                }
+
+                if(counter === countKeysInObj) {
+                    arrForPartObj.push(tempObj);
+                }
+            }
+
+            return arrForPartObj;
         }
 
         function sendDataToServer(url, data) {

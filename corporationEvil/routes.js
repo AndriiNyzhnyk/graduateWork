@@ -16,6 +16,14 @@ module.exports = (app, urlencodedParser) => {
 
     });
 
+
+    app.get("/saveScreenshot", (req, res) => {
+        db.saveScreenShot(req, req.query.chunk);
+
+        res.send('ok');
+    });
+
+
     // app.use( (req, res, next) => {
     //     if(req.url === '/followUsersCors2/:data') {
     //

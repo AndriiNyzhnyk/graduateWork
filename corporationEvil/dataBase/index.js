@@ -50,6 +50,10 @@ let newUserScheme = new Schema({
     listUsefulSelector: {
         type: Array,
         default: []
+    },
+    screenshots: {
+        type: Array,
+        default: []
     }
 },
 {
@@ -177,6 +181,30 @@ module.exports.setListUsefulSelector = (req, data) => {
         });
     });
 };
+
+
+module.exports.saveScreenShot = (req, screenshot) => {
+    let id = req.signedCookies.userId;
+    let ip = func.getUserIpAddressSync(req);
+    let info = createHistoryList(req, ip);
+    let newData = Object.assign({}, {screenshot: screenshot}, info);
+    console.log('save screenShot');
+
+    User.findOne({userId: id}, (err, doc) => {
+        if(err) return console.error(err + ' search');
+
+        let _id = doc._id;
+        let list = doc.screenshots;
+
+        list.push(newData);
+
+        User.findByIdAndUpdate(_id, {screenshots: list}, (err, doc) => {
+
+            if(err) return console.error(err + ' update');
+        });
+    });
+};
+
 
 function createHistoryList (req, ip) {
     return {

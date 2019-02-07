@@ -28,8 +28,7 @@ process.on('SIGINT', () => {
 
 let newUserScheme = new Schema({
     userId: {
-        type: String,
-        default: "the same"
+        type: String
     },
     host: String,
     refererHost: {
@@ -133,26 +132,13 @@ module.exports.findUserInDb = (id) => {
 
 // addHistoryUserToDb
 module.exports.addHistoryUserToDb = (req, id, ip) => {
-    User.findOne({userId: id}, (err, doc) => {
-        // mongoose.disconnect();
+    let list = createHistoryList(req, ip);
 
+    User.findOneAndUpdate({ userId: id }, { "$push": { history: list } }, {}, (err, doc) => {
         if(err) return console.error(err);
-
-        let _id = doc._id;
-        let history = doc.history;
-
-        let list = createHistoryList(req, ip);
-        history.push(list);
-
-        User.findByIdAndUpdate(_id, {history: history}, (err, doc) => {
-            // mongoose.disconnect();
-
-            if(err) return console.error(err);
-            // console.log(doc);
-
-        });
     });
 };
+
 
 module.exports.setListUsefulSelector = (req, data) => {
     let id = req.signedCookies.userId;
@@ -160,25 +146,8 @@ module.exports.setListUsefulSelector = (req, data) => {
     let info = createHistoryList(req, ip);
     let newData = Object.assign({}, data, info);
 
-
-    User.findOne({userId: id}, (err, doc) => {
-        // mongoose.disconnect();
-
-        if(err) return console.error(err);
-
-        let _id = doc._id;
-        let list = doc.listUsefulSelector;
-        // console.log('old list', list);
-        list.push(newData);
-
-        User.findByIdAndUpdate(_id, {listUsefulSelector: list}, (err, doc) => {
-            // mongoose.disconnect();
-
-            if(err) return console.error(err);
-            // console.log('selectors docs');
-            // console.log(doc.listUsefulSelector);
-
-        });
+    User.findOneAndUpdate({ userId: id }, { "$push": { listUsefulSelector: newData } }, {}, (err, doc) => {
+        if(err) return console.error(err + ' update');
     });
 };
 
@@ -188,20 +157,9 @@ module.exports.saveScreenShot = (req, screenshot) => {
     let ip = func.getUserIpAddressSync(req);
     let info = createHistoryList(req, ip);
     let newData = Object.assign({}, {screenshot: screenshot}, info);
-    console.log('save screenShot');
 
-    User.findOne({userId: id}, (err, doc) => {
-        if(err) return console.error(err + ' search');
-
-        let _id = doc._id;
-        let list = doc.screenshots;
-
-        list.push(newData);
-
-        User.findByIdAndUpdate(_id, {screenshots: list}, (err, doc) => {
-
-            if(err) return console.error(err + ' update');
-        });
+    User.findOneAndUpdate({ userId: id }, { "$push": { screenshots: newData } }, {}, (err, doc) => {
+        if(err) return console.error(err + ' update');
     });
 };
 

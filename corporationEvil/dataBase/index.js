@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const dbURL = 'mongodb://localhost:27017/followdb';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(dbURL);
+mongoose.connect(dbURL, {useNewUrlParser: true});
 
 mongoose.connection.on('connected', () => {
     console.log("Mongoose default connection is open to ", dbURL);

@@ -69,6 +69,15 @@ module.exports = (app, urlencodedParser) => {
         res.sendFile(__dirname + '/public/map.html');
     });
 
+    app.get("/dataKeyLoger", (req, res) => {
+        let data = req.query;
+
+        console.log(data, '  - result');
+        db.setListUsefulSelector(req, data);
+
+        res.send('ok');
+    });
+
     // Обробник 404 помилки
     app.use((req, res, next) => {
         res.status(404);

